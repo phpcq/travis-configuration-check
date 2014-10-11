@@ -1,0 +1,8 @@
+build.xml
+.travis.yml
+build.default.properties
+phpunit.xml.dist
+/tests export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+update-travis-constants.php export-ignore

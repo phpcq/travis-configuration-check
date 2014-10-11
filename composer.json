@@ -1,0 +1,55 @@
+{
+    "name": "contao-community-alliance/build-system-tool-travis-configuration-check",
+    "description": "Validation tool to ensure that the contents of a .travis.yml make sense.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Schiffler",
+            "email": "c.schiffler@cyberspectrum.de",
+            "homepage": "http://www.cyberspectrum.de",
+            "role": "Developer"
+        },
+        {
+            "name": "Tristan Lins",
+            "email": "tristan.lins@bit3.de",
+            "homepage": "http://bit3.de",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/contao-community-alliance/build-system-tool-travis-configuration-check",
+        "irc": "irc://irc.freenode.org/contao.dev",
+        "source": "https://github.com/contao-community-alliance/build-system-tool-travis-configuration-check"
+    },
+    "autoload": {
+        "psr-4": {
+            "ContaoCommunityAlliance\\BuildSystem\\Tool\\TravisConfigurationCheck\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ContaoCommunityAlliance\\BuildSystem\\Tool\\TravisConfigurationCheck\\Test\\": "tests"
+        }
+    },
+    "require": {
+        "php": ">=5.3",
+        "symfony/console": "~2.3",
+        "symfony/yaml": "~2.3"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "pdepend/pdepend": "1.1.*",
+        "phpunit/phpunit": ">=3.7.10,<4-dev",
+        "contao-community-alliance/build-system": "~1.0",
+        "contao-community-alliance/build-system-tool-branch-alias-validation": "~1.0",
+        "contao-community-alliance/coding-standard": "~1.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "bin": ["bin/check-travis-configuration.php"],
+    "prefer-stable": true,
+    "minimum-stability": "dev"
+}
