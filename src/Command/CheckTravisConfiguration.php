@@ -92,10 +92,10 @@ class CheckTravisConfiguration extends Command
     {
         if (!isset($composerJson['require']['php'])) {
             $this->output->writeln(
-                '<error>No PHP version mentioned in composer.json!</error>'
+                '<info>No PHP version mentioned in composer.json!</info>'
             );
 
-            return false;
+            return true;
         }
 
         $versionParser = new VersionParser();
@@ -160,8 +160,6 @@ class CheckTravisConfiguration extends Command
     public function validateNoUnmaintainedPhpVersionsInTravis($travisYml, $maintainedVersions)
     {
         if (empty($travisYml['php'])) {
-            $this->output->writeln('<info>travis.yml specifies no PHP version - check skipped.</info>');
-
             return true;
         }
 
@@ -200,8 +198,6 @@ class CheckTravisConfiguration extends Command
     public function validateNoUnmaintainedPhpVersionsInComposer($composerJson, $maintainedVersions)
     {
         if (empty($composerJson['require']['php'])) {
-            $this->output->writeln('<info>composer.json specifies no PHP version - check skipped.</info>');
-
             return true;
         }
 
@@ -264,8 +260,8 @@ class CheckTravisConfiguration extends Command
      */
     public function validatePhpVersionAgainstTravis($composerJson, $travisYml)
     {
-        if (!($this->validatePhpVersionComposerJson($composerJson) && $this->validatePhpVersionTravisYml($travisYml))) {
-            return false;
+        if (empty($composerJson['require']['php'])) {
+            return true;
         }
 
         $versionParser       = new VersionParser();
@@ -318,6 +314,10 @@ class CheckTravisConfiguration extends Command
             return false;
         }
 
+        if (empty($composerJson['require']['php'])) {
+            return true;
+        }
+
         $versionParser       = new VersionParser();
         $constraintsComposer = $versionParser->parseConstraints($composerJson['require']['php']);
 
@@ -362,6 +362,10 @@ class CheckTravisConfiguration extends Command
         $composerJson = $this->readComposerJson($input, $output);
         $travisYml    = $this->readTravisYml($input, $output);
         $exitCode     = 0;
+
+        if (!($this->validatePhpVersionComposerJson($composerJson) && $this->validatePhpVersionTravisYml($travisYml))) {
+            return false;
+        }
 
         if ($this->input->hasOption('unmaintained-version-error')) {
             if (!$this->validateNoUnmaintainedPhpVersions(

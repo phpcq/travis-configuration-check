@@ -103,7 +103,7 @@ class CheckTravisConfigurationTest extends \PHPUnit_Framework_TestCase
             $this->getOutputFromCommand($command)
         );
 
-        $this->assertFalse(
+        $this->assertTrue(
             $command->validatePhpVersionComposerJson(
                 array(
                     'require' => array(
