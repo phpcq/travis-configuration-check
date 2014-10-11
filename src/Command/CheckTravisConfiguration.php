@@ -149,9 +149,7 @@ class CheckTravisConfiguration extends Command
     }
 
     /**
-     * Ensure all the .travis.yml PHP versions are covered via the constraint in composer.json.
-     *
-     * @param array $composerJson       The contents of the composer.json.
+     * Ensure all the .travis.yml PHP versions are marked as maintained versions.
      *
      * @param array $travisYml          The contents of the .travis.yml.
      *
@@ -159,10 +157,13 @@ class CheckTravisConfiguration extends Command
      *
      * @return bool
      */
-    public function validateNoUnmaintainedPhpVersions($composerJson, $travisYml, $maintainedVersions)
+    public function validateNoUnmaintainedPhpVersionsInTravis($travisYml, $maintainedVersions)
     {
-        $versionParser       = new VersionParser();
-        $constraintsComposer = $versionParser->parseConstraints($composerJson['require']['php']);
+        if (empty($travisYml['php'])) {
+            $this->output->writeln('<info>travis.yml specifies no PHP version - check skipped.</info>');
+
+            return true;
+        }
 
         $failedTravis = array();
         // First pass - check the .travis.yml constraints against the maintained versions.
@@ -180,9 +181,33 @@ class CheckTravisConfiguration extends Command
                     implode(', ', $maintainedVersions)
                 )
             );
+
+            return false;
         }
 
-        $versionOk = false;
+        return true;
+    }
+
+   /**
+    * Ensure all the PHP versions in composer.json are marked as maintained versions.
+    *
+    * @param array $composerJson       The contents of the composer.json.
+    *
+    * @param array $maintainedVersions The currently maintained version list.
+    *
+    * @return bool
+    */
+    public function validateNoUnmaintainedPhpVersionsInComposer($composerJson, $maintainedVersions)
+    {
+        if (empty($composerJson['require']['php'])) {
+            $this->output->writeln('<info>composer.json specifies no PHP version - check skipped.</info>');
+
+            return true;
+        }
+
+        $versionParser       = new VersionParser();
+        $constraintsComposer = $versionParser->parseConstraints($composerJson['require']['php']);
+        $versionOk           = false;
         // Second pass - check all maintainedVersions against the composer.json constraint.
         foreach ($maintainedVersions as $maintainedVersion) {
             $constraintsMaintainedVersion = $versionParser->parseConstraints($maintainedVersion . '.9999999.9999999');
@@ -201,9 +226,31 @@ class CheckTravisConfiguration extends Command
                     implode(', ', $maintainedVersions)
                 )
             );
+
+            return false;
         }
 
-        return empty($failedTravis) && $versionOk;
+        return true;
+    }
+
+    /**
+     * Ensure all the .travis.yml PHP versions are covered via the constraint in composer.json.
+     *
+     * @param array $composerJson       The contents of the composer.json.
+     *
+     * @param array $travisYml          The contents of the .travis.yml.
+     *
+     * @param array $maintainedVersions The currently maintained version list.
+     *
+     * @return bool
+     */
+    public function validateNoUnmaintainedPhpVersions($composerJson, $travisYml, $maintainedVersions)
+    {
+        $versionOk = $this->validateNoUnmaintainedPhpVersionsInTravis($travisYml, $maintainedVersions);
+        $versionOk = $this->validateNoUnmaintainedPhpVersionsInComposer($composerJson, $maintainedVersions)
+            && $versionOk;
+
+        return $versionOk;
     }
 
     /**

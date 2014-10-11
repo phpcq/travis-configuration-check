@@ -484,18 +484,43 @@ class CheckTravisConfigurationTest extends \PHPUnit_Framework_TestCase
                 ),
                 'expect'    => true
             ),
+            array(
+                'composer'  => null,
+                'travis'    => array(
+                    '5.4',
+                    '5.5',
+                ),
+                'supported' => array(
+                    '5.3',
+                    '5.4',
+                    '5.5',
+                    '5.6',
+                ),
+                'expect'    => true
+            ),
+            array(
+                'composer'  => null,
+                'travis'    => null,
+                'supported' => array(
+                    '5.3',
+                    '5.4',
+                    '5.5',
+                    '5.6',
+                ),
+                'expect'    => true
+            ),
         );
 
         return array_map(function ($arr) {
             return array(
                 array(
-                    'require' => array(
+                    'require' => $arr['composer'] ? array(
                         'php' => $arr['composer']
-                    )
+                    ) : array()
                 ),
-                array(
+                $arr['travis'] ? array(
                     'php' => $arr['travis'],
-                ),
+                ) : array(),
                 $arr['supported'],
                 $arr['expect']
             );
@@ -530,8 +555,8 @@ class CheckTravisConfigurationTest extends \PHPUnit_Framework_TestCase
                 'maintained PHP versions: "%s" .travis.yml specifies: "%s" composer.json specifies: "%s" ' .
                 ' should %s - command output: "%s"',
                 implode(',', $supportedVersions),
-                implode(',', $travis['php']),
-                $composer['require']['php'],
+                implode(',', isset($travis['php']) ? $travis['php'] : array()),
+                isset($composer['require']['php']) ? $composer['require']['php'] : '',
                 ($expected ? 'validate. ' : 'not validate. '),
                 $this->getOutputFromCommand($command)
             )
