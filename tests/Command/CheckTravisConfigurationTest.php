@@ -160,7 +160,7 @@ class CheckTravisConfigurationTest extends \PHPUnit_Framework_TestCase
             $this->getOutputFromCommand($command)
         );
 
-        $this->assertFalse(
+        $this->assertTrue(
             $command->validatePhpVersionTravisYml(
                 array(
                 )

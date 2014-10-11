@@ -120,10 +120,10 @@ class CheckTravisConfiguration extends Command
     {
         if (!isset($travisYml['php'])) {
             $this->output->writeln(
-                '<error>No PHP version mentioned in .travis.yml!</error>'
+                '<info>No PHP version mentioned in .travis.yml!</info>'
             );
 
-            return false;
+            return true;
         }
 
         if (!is_array($travisYml['php'])) {
@@ -188,15 +188,15 @@ class CheckTravisConfiguration extends Command
         return true;
     }
 
-   /**
-    * Ensure all the PHP versions in composer.json are marked as maintained versions.
-    *
-    * @param array $composerJson       The contents of the composer.json.
-    *
-    * @param array $maintainedVersions The currently maintained version list.
-    *
-    * @return bool
-    */
+    /**
+     * Ensure all the PHP versions in composer.json are marked as maintained versions.
+     *
+     * @param array $composerJson       The contents of the composer.json.
+     *
+     * @param array $maintainedVersions The currently maintained version list.
+     *
+     * @return bool
+     */
     public function validateNoUnmaintainedPhpVersionsInComposer($composerJson, $maintainedVersions)
     {
         if (empty($composerJson['require']['php'])) {
@@ -271,7 +271,7 @@ class CheckTravisConfiguration extends Command
         $versionParser       = new VersionParser();
         $constraintsComposer = $versionParser->parseConstraints($composerJson['require']['php']);
 
-        foreach ($travisYml['php'] as $version) {
+        foreach (!empty($travisYml['php']) ? $travisYml['php'] : array() as $version) {
             // Travis only allows major.minor specification.
             $constraintsTravis = $versionParser->parseConstraints($version . '.9999999.9999999');
             if (!$constraintsComposer->matches($constraintsTravis)) {
@@ -305,7 +305,8 @@ class CheckTravisConfiguration extends Command
      */
     public function validateTravisContainsAllSupportedPhpVersions($composerJson, $travisYml, $supportedPhpByTravis)
     {
-        $unsupportedVersions = array_diff($travisYml['php'], $supportedPhpByTravis);
+        $travisVersions      = !empty($travisYml['php']) ? $travisYml['php'] : array();
+        $unsupportedVersions = array_diff($travisVersions, $supportedPhpByTravis);
         if ($unsupportedVersions) {
             $this->output->writeln(
                 sprintf(
@@ -321,7 +322,7 @@ class CheckTravisConfiguration extends Command
         $constraintsComposer = $versionParser->parseConstraints($composerJson['require']['php']);
 
         $missingVersions = array();
-        foreach (array_diff($supportedPhpByTravis, $travisYml['php']) as $version) {
+        foreach (array_diff($supportedPhpByTravis, $travisVersions) as $version) {
             // Travis only allows major.minor specification.
             $constraintsTravis = $versionParser->parseConstraints($version . '.9999999.9999999');
             if ($constraintsComposer->matches($constraintsTravis)) {
