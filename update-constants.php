@@ -2,13 +2,22 @@
 <?php
 
 /**
- * This file is part of the Contao Community Alliance Build System tools.
+ * This file is part of phpcq/travis-configuration-check.
  *
- * @copyright 2014 Contao Community Alliance <https://c-c-a.org>
- * @author    Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @package   contao-community-alliance/build-system-check-travis-configuration
- * @license   MIT
- * @link      https://c-c-a.org
+ * (c) 2014 Christian Schiffler, Tristan Lins
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * @package    phpcq/travis-configuration-check
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Tristan Lins <tristan@lins.io>
+ * @copyright  Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
+ * @link       https://github.com/phpcq/travis-configuration-check
+ * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
+ * @filesource
  */
 
 error_reporting(E_ALL);
@@ -77,7 +86,7 @@ function fgetDownload($url)
 }
 // @codingStandardsIgnoreEnd
 
-use ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck\TravisEnvironmentInformation;
+use PhpCodeQuality\TravisConfigurationCheck\TravisEnvironmentInformation;
 use Symfony\Component\Process\Process;
 
 echo "Checking information for travis-ci...\n";
@@ -161,14 +170,25 @@ file_put_contents(
  *
  * Last time generated: $time
  *
- * @copyright 2014 Contao Community Alliance <https://c-c-a.org>
- * @author    Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @package   contao-community-alliance/build-system-tool-travis-configuration-check
- * @license   MIT
- * @link      https://c-c-a.org
+ * This file is part of phpcq/travis-configuration-check.
+ *
+ * (c) 2014 Christian Schiffler, Tristan Lins
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * @package    phpcq/travis-configuration-check
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Tristan Lins <tristan@lins.io>
+ * @copyright  Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
+ * @link       https://github.com/phpcq/travis-configuration-check
+ * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
+ * @filesource
  */
 
-namespace ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck;
+namespace PhpCodeQuality\TravisConfigurationCheck;
 
 /**
  * Simple container to keep hold of the versions of PHP in travis-ci and the active extensions.

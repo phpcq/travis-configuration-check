@@ -1,20 +1,25 @@
 <?php
 
-/*
- * This file is auto generated, DO NOT MODIFY!!!!!!
+/**
+ * This file is part of phpcq/travis-configuration-check.
  *
- * Run update-travis-constants.php from the project root to update the information.
+ * (c) 2014 Christian Schiffler, Tristan Lins
  *
- * Last time generated: Sat 2014-10-11 09-10-00
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
- * @copyright 2014 Contao Community Alliance <https://c-c-a.org>
- * @author    Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @package   contao-community-alliance/build-system-tool-travis-configuration-check
- * @license   MIT
- * @link      https://c-c-a.org
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * @package    phpcq/travis-configuration-check
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Tristan Lins <tristan@lins.io>
+ * @copyright  Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
+ * @link       https://github.com/phpcq/travis-configuration-check
+ * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
+ * @filesource
  */
 
-namespace ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck;
+namespace PhpCodeQuality\TravisConfigurationCheck;
 
 /**
  * Simple container to keep hold of the versions of PHP in travis-ci and the active extensions.

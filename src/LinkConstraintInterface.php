@@ -1,17 +1,25 @@
 <?php
 
-/*
- * This file is copied from composer.
+/**
+ * This file is part of phpcq/travis-configuration-check.
  *
- * @copyright 2014 Contao Community Alliance <https://c-c-a.org>
- * @author    Nils Adermann <naderman@naderman.de>
- * @author    Jordi Boggiano <j.boggiano@seld.be>
- * @package   contao-community-alliance/build-system-tool-travis-configuration-check
- * @license   MIT
- * @link      https://c-c-a.org
+ * (c) 2014 Christian Schiffler, Tristan Lins
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * @package    phpcq/travis-configuration-check
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Tristan Lins <tristan@lins.io>
+ * @copyright  Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
+ * @link       https://github.com/phpcq/travis-configuration-check
+ * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
+ * @filesource
  */
 
-namespace ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck;
+namespace PhpCodeQuality\TravisConfigurationCheck;
 
 /**
  * Defines a constraint on a link between two packages.

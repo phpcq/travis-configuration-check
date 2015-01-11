@@ -1,17 +1,27 @@
 <?php
 
 /**
- * This file is part of the Contao Community Alliance Build System tools.
+ * This file is part of phpcq/travis-configuration-check.
  *
- * @copyright 2014 Contao Community Alliance <https://c-c-a.org>
- * @author    Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @package   contao-community-alliance/build-system-tool-travis-configuration-check
- * @license   MIT
- * @link      https://c-c-a.org
+ * (c) 2014 Christian Schiffler, Tristan Lins
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * @package    phpcq/travis-configuration-check
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Tristan Lins <tristan@lins.io>
+ * @copyright  Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
+ * @link       https://github.com/phpcq/travis-configuration-check
+ * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
+ * @filesource
  */
-namespace ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck\Test\Command;
 
-use ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck\Command\CheckTravisConfiguration;
+namespace PhpCodeQuality\TravisConfigurationCheck\Test\Command;
+
+use PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -19,7 +29,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * Tests for class CheckTravisConfiguration.
  *
  * @codingStandardsIgnoreStart
- * @coversDefaultClass \ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck\Command\CheckTravisConfiguration
+ * @coversDefaultClass \PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration
  * @codingStandardsIgnoreEnd
  */
 class CheckTravisConfigurationTest extends \PHPUnit_Framework_TestCase
@@ -34,14 +44,14 @@ class CheckTravisConfigurationTest extends \PHPUnit_Framework_TestCase
         $command = new CheckTravisConfiguration();
 
         $reflection = new \ReflectionProperty(
-            'ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck\Command\CheckTravisConfiguration',
+            'PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration',
             'input'
         );
         $reflection->setAccessible(true);
         $reflection->setValue($command, new StringInput(''));
 
         $reflection = new \ReflectionProperty(
-            'ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck\Command\CheckTravisConfiguration',
+            'PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration',
             'output'
         );
         $reflection->setAccessible(true);
@@ -60,7 +70,7 @@ class CheckTravisConfigurationTest extends \PHPUnit_Framework_TestCase
     protected function getOutputFromCommand($command)
     {
         $reflection = new \ReflectionProperty(
-            'ContaoCommunityAlliance\BuildSystem\Tool\TravisConfigurationCheck\Command\CheckTravisConfiguration',
+            'PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration',
             'output'
         );
         $reflection->setAccessible(true);

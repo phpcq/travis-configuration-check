@@ -1,5 +1,5 @@
 {
-    "name": "contao-community-alliance/build-system-tool-travis-configuration-check",
+    "name": "phpcq/travis-configuration-check",
     "description": "Validation tool to ensure that the contents of a .travis.yml make sense.",
     "license": "MIT",
     "authors": [
@@ -11,24 +11,24 @@
         },
         {
             "name": "Tristan Lins",
-            "email": "tristan.lins@bit3.de",
-            "homepage": "http://bit3.de",
+            "email":"tristan@lins.io",
+            "homepage":"https://tristan.lins.io",
             "role": "Developer"
         }
     ],
     "support": {
-        "issues": "https://github.com/contao-community-alliance/build-system-tool-travis-configuration-check",
-        "irc": "irc://irc.freenode.org/contao.dev",
-        "source": "https://github.com/contao-community-alliance/build-system-tool-travis-configuration-check"
+        "issues": "https://github.com/phpcq/travis-configuration-check",
+        "source": "https://github.com/phpcq/travis-configuration-check",
+        "irc": "irc://irc.freenode.org/phpcq"
     },
     "autoload": {
         "psr-4": {
-            "ContaoCommunityAlliance\\BuildSystem\\Tool\\TravisConfigurationCheck\\": "src"
+            "PhpCodeQuality\\TravisConfigurationCheck\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ContaoCommunityAlliance\\BuildSystem\\Tool\\TravisConfigurationCheck\\Test\\": "tests"
+            "PhpCodeQuality\\TravisConfigurationCheck\\Test\\": "tests"
         }
     },
     "require": {
@@ -40,9 +40,9 @@
         "squizlabs/php_codesniffer": "*",
         "pdepend/pdepend": "1.1.*",
         "phpunit/phpunit": ">=3.7.10,<4-dev",
-        "contao-community-alliance/build-system": "~1.0",
-        "contao-community-alliance/build-system-tool-branch-alias-validation": "~1.0",
-        "contao-community-alliance/coding-standard": "~1.0"
+        "phpcq/phpcq": "~1.0",
+        "phpcq/branch-alias-validation": "~1.0",
+        "phpcq/coding-standard": "~1.0"
     },
     "extra": {
         "branch-alias": {

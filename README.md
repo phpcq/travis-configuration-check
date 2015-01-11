@@ -1,8 +1,8 @@
-[![Version](http://img.shields.io/packagist/v/contao-community-alliance/build-system-tool-travis-configuration-check.svg?style=flat-square)](https://packagist.org/packages/contao-community-alliance/build-system-tool-travis-configuration-check)
-[![Stable Build Status](http://img.shields.io/travis/contao-community-alliance/build-system-tool-travis-configuration-check/master.svg?style=flat-square)](https://travis-ci.org/contao-community-alliance/build-system-tool-travis-configuration-check)
-[![Upstream Build Status](http://img.shields.io/travis/contao-community-alliance/build-system-tool-travis-configuration-check/develop.svg?style=flat-square)](https://travis-ci.org/contao-community-alliance/build-system-tool-travis-configuration-check)
-[![License](http://img.shields.io/packagist/l/contao-community-alliance/build-system-tool-travis-configuration-check.svg?style=flat-square)](https://github.com/contao-community-alliance/build-system-tool-travis-configuration-check/blob/master/LICENSE)
-[![Downloads](http://img.shields.io/packagist/dt/contao-community-alliance/build-system-tool-travis-configuration-check.svg?style=flat-square)](https://packagist.org/packages/contao-community-alliance/build-system-tool-travis-configuration-check)
+[![Version](http://img.shields.io/packagist/v/phpcq/travis-configuration-check.svg?style=flat-square)](https://packagist.org/packages/phpcq/travis-configuration-check)
+[![Stable Build Status](http://img.shields.io/travis/phpcq/travis-configuration-check/master.svg?style=flat-square)](https://travis-ci.org/phpcq/travis-configuration-check)
+[![Upstream Build Status](http://img.shields.io/travis/phpcq/travis-configuration-check/develop.svg?style=flat-square)](https://travis-ci.org/phpcq/travis-configuration-check)
+[![License](http://img.shields.io/packagist/l/phpcq/travis-configuration-check.svg?style=flat-square)](https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE)
+[![Downloads](http://img.shields.io/packagist/dt/phpcq/travis-configuration-check.svg?style=flat-square)](https://packagist.org/packages/phpcq/travis-configuration-check)
 
 Validate .travis.yml against composer.json.
 ============================================
@@ -22,7 +22,7 @@ Usage
 
 Add to your `composer.json` in the `require-dev` section:
 ```
-"contao-community-alliance/build-system-tool-travis-configuration-check": "~1.0"
+"phpcq/travis-configuration-check": "~1.0"
 ```
 
 Call the binary:
