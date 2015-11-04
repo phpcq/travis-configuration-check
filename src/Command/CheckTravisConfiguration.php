@@ -13,14 +13,15 @@
  * @package    phpcq/travis-configuration-check
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Tristan Lins <tristan@lins.io>
- * @copyright  Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
- * @link       https://github.com/phpcq/travis-configuration-check
+ * @copyright  2015 Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
  * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
+ * @link       https://github.com/phpcq/travis-configuration-check
  * @filesource
  */
 
 namespace PhpCodeQuality\TravisConfigurationCheck\Command;
 
+use PhpCodeQuality\TravisConfigurationCheck\LinkConstraintInterface;
 use PhpCodeQuality\TravisConfigurationCheck\TravisEnvironmentInformation;
 use PhpCodeQuality\TravisConfigurationCheck\VersionParser;
 use Symfony\Component\Console\Command\Command;
@@ -147,6 +148,9 @@ class CheckTravisConfiguration extends Command
         $versionParser = new VersionParser();
         foreach ($travisYml['php'] as $version) {
             try {
+                if ('nightly' === $version) {
+                    continue;
+                }
                 $versionParser->parseConstraints($version);
             } catch (\Exception $e) {
                 $this->output->writeln('<error>' . $e->getMessage() . '</error>');
@@ -216,6 +220,10 @@ class CheckTravisConfiguration extends Command
         $versionOk           = false;
         // Second pass - check all maintainedVersions against the composer.json constraint.
         foreach ($maintainedVersions as $maintainedVersion) {
+            if ('nightly' === $maintainedVersion) {
+                continue;
+            }
+
             $constraintsMaintainedVersion = $versionParser->parseConstraints($maintainedVersion . '.9999999.9999999');
             if ($constraintsComposer->matches($constraintsMaintainedVersion)) {
                 $versionOk = true;
@@ -278,6 +286,10 @@ class CheckTravisConfiguration extends Command
         $constraintsComposer = $versionParser->parseConstraints($composerJson['require']['php']);
 
         foreach (!empty($travisYml['php']) ? $travisYml['php'] : array() as $version) {
+            if ('nightly' === $version) {
+                continue;
+            }
+
             // Travis only allows major.minor specification.
             $constraintsTravis = $versionParser->parseConstraints($version . '.9999999.9999999');
             if (!$constraintsComposer->matches($constraintsTravis)) {
@@ -330,15 +342,11 @@ class CheckTravisConfiguration extends Command
 
         $versionParser       = new VersionParser();
         $constraintsComposer = $versionParser->parseConstraints($composerJson['require']['php']);
-
-        $missingVersions = array();
-        foreach (array_diff($supportedPhpByTravis, $travisVersions) as $version) {
-            // Travis only allows major.minor specification.
-            $constraintsTravis = $versionParser->parseConstraints($version . '.9999999.9999999');
-            if ($constraintsComposer->matches($constraintsTravis)) {
-                $missingVersions[] = $version;
-            }
-        }
+        $missingVersions     = $this->determineMissingVersions(
+            $supportedPhpByTravis,
+            $travisVersions,
+            $constraintsComposer
+        );
 
         if (!empty($missingVersions)) {
             $this->output->writeln(
@@ -369,8 +377,8 @@ class CheckTravisConfiguration extends Command
     {
         $this->input  = $input;
         $this->output = $output;
-        $composerJson = $this->readComposerJson($input, $output);
-        $travisYml    = $this->readTravisYml($input, $output);
+        $composerJson = $this->readComposerJson();
+        $travisYml    = $this->readTravisYml();
         $exitCode     = 0;
 
         if (!($this->validatePhpVersionComposerJson($composerJson) && $this->validatePhpVersionTravisYml($travisYml))) {
@@ -400,5 +408,35 @@ class CheckTravisConfiguration extends Command
         }
 
         return $exitCode;
+    }
+
+    /**
+     * Determine the list of versions missing in composer.json.
+     *
+     * @param string[]                $supportedPhpByTravis The list of versions supported by travis.
+     *
+     * @param string[]                $travisVersions       The list of versions specified in .travis.yml.
+     *
+     * @param LinkConstraintInterface $constraintsComposer  The constraint from composer.json.
+     *
+     * @return string[]
+     */
+    private function determineMissingVersions($supportedPhpByTravis, $travisVersions, $constraintsComposer)
+    {
+        $versionParser   = new VersionParser();
+        $missingVersions = array();
+        foreach (array_diff($supportedPhpByTravis, $travisVersions) as $version) {
+            if ('nightly' === $version) {
+                continue;
+            }
+
+            // Travis only allows major.minor specification.
+            $constraintsTravis = $versionParser->parseConstraints($version . '.9999999.9999999');
+            if ($constraintsComposer->matches($constraintsTravis)) {
+                $missingVersions[] = $version;
+            }
+        }
+
+        return $missingVersions;
     }
 }

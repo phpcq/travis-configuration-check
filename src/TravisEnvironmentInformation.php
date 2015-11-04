@@ -13,9 +13,9 @@
  * @package    phpcq/travis-configuration-check
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Tristan Lins <tristan@lins.io>
- * @copyright  Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
- * @link       https://github.com/phpcq/travis-configuration-check
+ * @copyright  2015 Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
  * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
+ * @link       https://github.com/phpcq/travis-configuration-check
  * @filesource
  */
 
@@ -38,11 +38,11 @@ interface TravisEnvironmentInformation
     /**
      * The PHP versions in use at travis-ci.
      */
-    const PHP_VERSIONS = '5.6,5.5,5.4,5.3';
+    const PHP_VERSIONS = 'nightly,7.0,5.6,5.5,5.4,5.3';
 
+    //@codingStandardsIgnoreStart
     /**
      * The PHP extensions available at travis-ci.
-     * @codingStandardsIgnoreStart
      */
     const PHP_EXTENSIONS = 'bcmath,bz2,core,ctype,curl,date,dom,ereg,exif,fileinfo,filter,ftp,gd,gettext,hash,iconv,intl,json,libxml,mbstring,mcrypt,mysql,mysqli,mysqlnd,openssl,pcntl,pcre,pdo,pdo_mysql,pdo_pgsql,pdo_sqlite,pgsql,phar,posix,readline,reflection,session,shmop,simplexml,soap';
     // @codingStandardsIgnoreEnd
