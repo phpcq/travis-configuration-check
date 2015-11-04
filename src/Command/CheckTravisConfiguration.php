@@ -21,6 +21,7 @@
 
 namespace PhpCodeQuality\TravisConfigurationCheck\Command;
 
+use PhpCodeQuality\TravisConfigurationCheck\LinkConstraintInterface;
 use PhpCodeQuality\TravisConfigurationCheck\TravisEnvironmentInformation;
 use PhpCodeQuality\TravisConfigurationCheck\VersionParser;
 use Symfony\Component\Console\Command\Command;
@@ -330,15 +331,11 @@ class CheckTravisConfiguration extends Command
 
         $versionParser       = new VersionParser();
         $constraintsComposer = $versionParser->parseConstraints($composerJson['require']['php']);
-
-        $missingVersions = array();
-        foreach (array_diff($supportedPhpByTravis, $travisVersions) as $version) {
-            // Travis only allows major.minor specification.
-            $constraintsTravis = $versionParser->parseConstraints($version . '.9999999.9999999');
-            if ($constraintsComposer->matches($constraintsTravis)) {
-                $missingVersions[] = $version;
-            }
-        }
+        $missingVersions     = $this->determineMissingVersions(
+            $supportedPhpByTravis,
+            $travisVersions,
+            $constraintsComposer
+        );
 
         if (!empty($missingVersions)) {
             $this->output->writeln(
@@ -400,5 +397,31 @@ class CheckTravisConfiguration extends Command
         }
 
         return $exitCode;
+    }
+
+    /**
+     * Determine the list of versions missing in composer.json.
+     *
+     * @param string[]                $supportedPhpByTravis The list of versions supported by travis.
+     *
+     * @param string[]                $travisVersions       The list of versions specified in .travis.yml.
+     *
+     * @param LinkConstraintInterface $constraintsComposer  The constraint from composer.json.
+     *
+     * @return string[]
+     */
+    private function determineMissingVersions($supportedPhpByTravis, $travisVersions, $constraintsComposer)
+    {
+        $versionParser   = new VersionParser();
+        $missingVersions = array();
+        foreach (array_diff($supportedPhpByTravis, $travisVersions) as $version) {
+            // Travis only allows major.minor specification.
+            $constraintsTravis = $versionParser->parseConstraints($version . '.9999999.9999999');
+            if ($constraintsComposer->matches($constraintsTravis)) {
+                $missingVersions[] = $version;
+            }
+        }
+
+        return $missingVersions;
     }
 }
