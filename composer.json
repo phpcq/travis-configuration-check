@@ -37,12 +37,7 @@
         "symfony/yaml": "~2.3"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "*",
-        "pdepend/pdepend": "1.1.*",
-        "phpunit/phpunit": ">=3.7.10,<4-dev",
-        "phpcq/phpcq": "~1.0",
-        "phpcq/branch-alias-validation": "~1.0",
-        "phpcq/coding-standard": "~1.0"
+        "phpcq/all-tasks": "~1.1"
     },
     "extra": {
         "branch-alias": {
