@@ -13,9 +13,9 @@
  * @package    phpcq/travis-configuration-check
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Tristan Lins <tristan@lins.io>
- * @copyright  Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
- * @link       https://github.com/phpcq/travis-configuration-check
+ * @copyright  2015 Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
  * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
+ * @link       https://github.com/phpcq/travis-configuration-check
  * @filesource
  */
 
@@ -369,8 +369,8 @@ class CheckTravisConfiguration extends Command
     {
         $this->input  = $input;
         $this->output = $output;
-        $composerJson = $this->readComposerJson($input, $output);
-        $travisYml    = $this->readTravisYml($input, $output);
+        $composerJson = $this->readComposerJson();
+        $travisYml    = $this->readTravisYml();
         $exitCode     = 0;
 
         if (!($this->validatePhpVersionComposerJson($composerJson) && $this->validatePhpVersionTravisYml($travisYml))) {
