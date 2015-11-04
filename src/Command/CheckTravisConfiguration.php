@@ -148,6 +148,9 @@ class CheckTravisConfiguration extends Command
         $versionParser = new VersionParser();
         foreach ($travisYml['php'] as $version) {
             try {
+                if ('nightly' === $version) {
+                    continue;
+                }
                 $versionParser->parseConstraints($version);
             } catch (\Exception $e) {
                 $this->output->writeln('<error>' . $e->getMessage() . '</error>');
@@ -217,6 +220,10 @@ class CheckTravisConfiguration extends Command
         $versionOk           = false;
         // Second pass - check all maintainedVersions against the composer.json constraint.
         foreach ($maintainedVersions as $maintainedVersion) {
+            if ('nightly' === $maintainedVersion) {
+                continue;
+            }
+
             $constraintsMaintainedVersion = $versionParser->parseConstraints($maintainedVersion . '.9999999.9999999');
             if ($constraintsComposer->matches($constraintsMaintainedVersion)) {
                 $versionOk = true;
@@ -279,6 +286,10 @@ class CheckTravisConfiguration extends Command
         $constraintsComposer = $versionParser->parseConstraints($composerJson['require']['php']);
 
         foreach (!empty($travisYml['php']) ? $travisYml['php'] : array() as $version) {
+            if ('nightly' === $version) {
+                continue;
+            }
+
             // Travis only allows major.minor specification.
             $constraintsTravis = $versionParser->parseConstraints($version . '.9999999.9999999');
             if (!$constraintsComposer->matches($constraintsTravis)) {
@@ -415,6 +426,10 @@ class CheckTravisConfiguration extends Command
         $versionParser   = new VersionParser();
         $missingVersions = array();
         foreach (array_diff($supportedPhpByTravis, $travisVersions) as $version) {
+            if ('nightly' === $version) {
+                continue;
+            }
+
             // Travis only allows major.minor specification.
             $constraintsTravis = $versionParser->parseConstraints($version . '.9999999.9999999');
             if ($constraintsComposer->matches($constraintsTravis)) {

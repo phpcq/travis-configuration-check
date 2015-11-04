@@ -38,7 +38,7 @@ interface TravisEnvironmentInformation
     /**
      * The PHP versions in use at travis-ci.
      */
-    const PHP_VERSIONS = '5.6,5.5,5.4,5.3';
+    const PHP_VERSIONS = 'nightly,7.0,5.6,5.5,5.4,5.3';
 
     //@codingStandardsIgnoreStart
     /**
