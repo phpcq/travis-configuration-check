@@ -22,6 +22,7 @@
 namespace PhpCodeQuality\TravisConfigurationCheck\Test\Command;
 
 use PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -32,7 +33,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @coversDefaultClass \PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration
  * @codingStandardsIgnoreEnd
  */
-class CheckTravisConfigurationTest extends \PHPUnit_Framework_TestCase
+class CheckTravisConfigurationTest extends TestCase
 {
     /**
      * Create a command instance with dummy input and output.
