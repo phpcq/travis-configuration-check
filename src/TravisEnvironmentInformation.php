@@ -33,12 +33,12 @@ interface TravisEnvironmentInformation
     /**
      * The PHP versions currently maintained by php.org.
      */
-    const PHP_VERSIONS_MAINTAINED = '5.6,7.0';
+    const PHP_VERSIONS_MAINTAINED = '5.6,7.0,7.1,7.2';
 
     /**
      * The PHP versions in use at travis-ci.
      */
-    const PHP_VERSIONS = 'nightly,7.1,7.0,5.6,5.5,5.4,5.3';
+    const PHP_VERSIONS = 'nightly,7.2,7.1,7.0,5.6,5.5,5.4';
 
     //@codingStandardsIgnoreStart
     /**
