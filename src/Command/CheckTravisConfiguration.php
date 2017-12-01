@@ -21,9 +21,9 @@
 
 namespace PhpCodeQuality\TravisConfigurationCheck\Command;
 
-use PhpCodeQuality\TravisConfigurationCheck\LinkConstraintInterface;
+use Composer\Semver\Constraint\ConstraintInterface;
+use Composer\Semver\VersionParser;
 use PhpCodeQuality\TravisConfigurationCheck\TravisEnvironmentInformation;
-use PhpCodeQuality\TravisConfigurationCheck\VersionParser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -413,11 +413,11 @@ class CheckTravisConfiguration extends Command
     /**
      * Determine the list of versions missing in composer.json.
      *
-     * @param string[]                $supportedPhpByTravis The list of versions supported by travis.
+     * @param string[]            $supportedPhpByTravis The list of versions supported by travis.
      *
-     * @param string[]                $travisVersions       The list of versions specified in .travis.yml.
+     * @param string[]            $travisVersions       The list of versions specified in .travis.yml.
      *
-     * @param LinkConstraintInterface $constraintsComposer  The constraint from composer.json.
+     * @param ConstraintInterface $constraintsComposer  The constraint from composer.json.
      *
      * @return string[]
      */
