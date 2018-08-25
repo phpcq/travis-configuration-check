@@ -30,7 +30,6 @@ install:
 script: ant -keep-going
 
 allow_failure:
-    - php: "7.0"
     - php: "nightly"
 
 # Hack to make things work again - we can not use a shallow repository.
