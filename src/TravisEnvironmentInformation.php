@@ -13,6 +13,7 @@
  * @package    phpcq/travis-configuration-check
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Tristan Lins <tristan@lins.io>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2015 Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
  * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
  * @link       https://github.com/phpcq/travis-configuration-check
