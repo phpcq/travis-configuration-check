@@ -1,0 +1,6 @@
+copy-left:
+    "Christian Schiffler <c.schiffler@cyberspectrum.de>":
+        - "src/Application/ValidateBranchAliasApplication.php"
+    "Tristan Lins <tristan@lins.io>":
+        - "src/Application/ValidateBranchAliasApplication.php"
+

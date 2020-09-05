@@ -3,7 +3,7 @@
 /**
  * This file is part of phpcq/travis-configuration-check.
  *
- * (c) 2014 Christian Schiffler, Tristan Lins
+ * (c) 2014-2020 Christian Schiffler, Tristan Lins
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,8 @@
  * @package    phpcq/travis-configuration-check
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Tristan Lins <tristan@lins.io>
- * @copyright  Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2014-2020 Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
  * @link       https://github.com/phpcq/travis-configuration-check
  * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
  * @filesource
@@ -29,9 +30,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 /**
  * Tests for class CheckTravisConfiguration.
  *
- * @codingStandardsIgnoreStart
- * @coversDefaultClass \PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration
- * @codingStandardsIgnoreEnd
+ * @covers  \PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration
  */
 class CheckTravisConfigurationTest extends TestCase
 {
@@ -44,17 +43,11 @@ class CheckTravisConfigurationTest extends TestCase
     {
         $command = new CheckTravisConfiguration();
 
-        $reflection = new \ReflectionProperty(
-            'PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration',
-            'input'
-        );
+        $reflection = new \ReflectionProperty(CheckTravisConfiguration::class, 'input');
         $reflection->setAccessible(true);
         $reflection->setValue($command, new StringInput(''));
 
-        $reflection = new \ReflectionProperty(
-            'PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration',
-            'output'
-        );
+        $reflection = new \ReflectionProperty(CheckTravisConfiguration::class, 'output');
         $reflection->setAccessible(true);
         $reflection->setValue($command, new BufferedOutput());
 
@@ -70,10 +63,7 @@ class CheckTravisConfigurationTest extends TestCase
      */
     protected function getOutputFromCommand($command)
     {
-        $reflection = new \ReflectionProperty(
-            'PhpCodeQuality\TravisConfigurationCheck\Command\CheckTravisConfiguration',
-            'output'
-        );
+        $reflection = new \ReflectionProperty(CheckTravisConfiguration::class, 'output');
         $reflection->setAccessible(true);
 
         $output = $reflection->getValue($command);
@@ -84,54 +74,52 @@ class CheckTravisConfigurationTest extends TestCase
     /**
      * Test CheckTravisConfiguration::validatePhpVersionComposerJson.
      *
-     * @covers CheckTravisConfiguration::validatePhpVersionComposerJson
-     *
      * @return void
      */
     public function testValidatePhpVersionInComposerJson()
     {
         $command = $this->getCommand();
 
-        $this->assertTrue(
+        self::assertTrue(
             $command->validatePhpVersionComposerJson(
-                array(
-                    'require' => array(
+                [
+                    'require' => [
                         'php' => '~5.3'
-                    )
-                )
+                    ]
+                ]
             ),
             $this->getOutputFromCommand($command)
         );
 
-        $this->assertTrue(
+        self::assertTrue(
             $command->validatePhpVersionComposerJson(
-                array(
-                    'require' => array(
+                [
+                    'require' => [
                         'php' => '>=5.3,<1.8'
-                    )
-                )
+                    ]
+                ]
             ),
             $this->getOutputFromCommand($command)
         );
 
-        $this->assertTrue(
+        self::assertTrue(
             $command->validatePhpVersionComposerJson(
-                array(
-                    'require' => array(
+                [
+                    'require' => [
                         'symfony/console' => '~2.3'
-                    )
-                )
+                    ]
+                ]
             ),
             $this->getOutputFromCommand($command)
         );
 
-        $this->assertFalse(
+        self::assertFalse(
             $command->validatePhpVersionComposerJson(
-                array(
-                    'require' => array(
+                [
+                    'require' => [
                         'php' => 'invalid-constraint'
-                    )
-                )
+                    ]
+                ]
             ),
             $this->getOutputFromCommand($command)
         );
@@ -140,49 +128,44 @@ class CheckTravisConfigurationTest extends TestCase
     /**
      * Test CheckTravisConfiguration::validatePhpVersionTravisYml.
      *
-     * @covers CheckTravisConfiguration::validatePhpVersionTravisYml
-     *
      * @return void
      */
     public function testValidatePhpVersionTravisYml()
     {
         $command = $this->getCommand();
 
-        $this->assertTrue(
+        self::assertTrue(
             $command->validatePhpVersionTravisYml(
-                array(
-                    'php' => array('5.3')
-                )
+                [
+                    'php' => ['5.3']
+                ]
             ),
             $this->getOutputFromCommand($command)
         );
 
-        $this->assertTrue(
+        self::assertTrue(
             $command->validatePhpVersionTravisYml(
-                array(
-                    'php' => array(
+                [
+                    'php' => [
                         '5.3',
                         '5.4',
                         '5.5',
                         '5.6'
-                    )
-                )
+                    ]
+                ]
             ),
             $this->getOutputFromCommand($command)
         );
 
-        $this->assertTrue(
-            $command->validatePhpVersionTravisYml(
-                array(
-                )
-            )
+        self::assertTrue(
+            $command->validatePhpVersionTravisYml([])
         );
 
-        $this->assertFalse(
+        self::assertFalse(
             $command->validatePhpVersionTravisYml(
-                array(
-                    'php' => array('invalid-constraint')
-                )
+                [
+                    'php' => ['invalid-constraint']
+                ]
             ),
             $this->getOutputFromCommand($command)
         );
@@ -195,71 +178,70 @@ class CheckTravisConfigurationTest extends TestCase
      */
     public function prepareVersionsForValidatePhpVersionAgainstTravis()
     {
-        $versions = array
-        (
-            array(
+        $versions = [
+            [
                 'composer' => '>=5.3',
-                'travis'   => array('5.3'),
+                'travis'   => ['5.3'],
                 'expect'   => true
-            ),
-            array(
+            ],
+            [
                 'composer' => '>=5.3',
-                'travis'   => array(
+                'travis'   => [
                     '5.3'
-                ),
+                ],
                 'expect'   => true
-            ),
-            array(
+            ],
+            [
                 'composer' => '>=5.4',
-                'travis'   => array(
+                'travis'   => [
                     '5.3',
                     '5.4',
                     '5.5',
                     '5.6'
-                ),
+                ],
                 'expect'   => false
-            ),
-            array(
+            ],
+            [
                 'composer' => '>=5.4',
-                'travis'   => array(
+                'travis'   => [
                     '5.5',
                     '5.6'
-                ),
+                ],
                 'expect'   => true
-            ),
-             array(
+            ],
+            [
                 'composer' => '>=5.4.3',
-                'travis'   => array(
+                'travis'   => [
                     '5.4',
                     '5.5',
                     '5.6'
-                ),
+                ],
                 'expect'   => true
-            ),
-             array(
+            ],
+            [
                 'composer' => '>=5.4.3',
-                'travis'   => array(
+                'travis'   => [
                     '5.3',
                     '5.4',
                     '5.5',
                     '5.6'
-                ),
+                ],
                 'expect'   => false
-            ),
-        );
+            ],
+        ];
 
-        return array_map(function ($arr) {
-            return array(
-                array(
-                    'require' => array(
+        return \array_map(function ($arr) {
+            return [
+                [
+                    'require' => [
                         'php' => $arr['composer']
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'php' => $arr['travis'],
-                ),
+                ],
                 $arr['expect']
-            );
+            ];
         }, $versions);
     }
 
@@ -275,17 +257,15 @@ class CheckTravisConfigurationTest extends TestCase
      * @return void
      *
      * @dataProvider prepareVersionsForValidatePhpVersionAgainstTravis
-     *
-     * @covers       CheckTravisConfiguration::validatePhpVersionAgainstTravis
      */
     public function testValidatePhpVersionAgainstTravis($composer, $travis, $expected)
     {
         $command = $this->getCommand();
 
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             $command->validatePhpVersionAgainstTravis($composer, $travis),
-            'composer.json: ' . $composer['require']['php'] . ' .travis.yml: ' . implode(',', $travis['php']) .
+            'composer.json: ' . $composer['require']['php'] . ' .travis.yml: ' . \implode(',', $travis['php']) .
             ' should ' . ($expected ? 'validate ' : 'not validate. ') . $this->getOutputFromCommand($command)
         );
     }
@@ -297,89 +277,88 @@ class CheckTravisConfigurationTest extends TestCase
      */
     public function prepareValidateTravisContainsAllSupportedPhpVersions()
     {
-        $versions = array
-        (
-            array(
+        $versions = [
+            [
                 'composer'  => '>=5.3',
-                'travis'    => array('5.3'),
-                'supported' => array(
-                ),
+                'travis'    => ['5.3'],
+                'supported' => [
+                ],
                 'expect'    => false
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.3',
-                'travis'    => array(
+                'travis'    => [
                     '5.3',
                     '5.4'
-                ),
-                'supported' => array(),
+                ],
+                'supported' => [],
                 'expect'    => false
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.2',
-                'travis'    => array(
+                'travis'    => [
                     '5.2',
                     '5.3',
                     '5.4'
-                ),
-                'supported' => array(
+                ],
+                'supported' => [
                     '5.3',
                     '5.4'
-                ),
+                ],
                 'expect'    => false
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.3',
-                'travis'    => array(
+                'travis'    => [
                     '5.4'
-                ),
-                'supported' => array(
+                ],
+                'supported' => [
                     '5.3',
                     '5.4'
-                ),
+                ],
                 'expect'    => false
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.3',
-                'travis'    => array(
+                'travis'    => [
                     '5.3',
                     '5.4'
-                ),
-                'supported' => array(
+                ],
+                'supported' => [
                     '5.3',
                     '5.4'
-                ),
+                ],
                 'expect'    => true
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.4,<5.6',
-                'travis'    => array(
+                'travis'    => [
                     '5.4',
                     '5.5',
-                ),
-                'supported' => array(
+                ],
+                'supported' => [
                     '5.3',
                     '5.4',
                     '5.5',
                     '5.6',
-                ),
+                ],
                 'expect'    => true
-            ),
-        );
+            ],
+        ];
 
-        return array_map(function ($arr) {
-            return array(
-                array(
-                    'require' => array(
+        return \array_map(function ($arr) {
+            return [
+                [
+                    'require' => [
                         'php' => $arr['composer']
-                    )
-                ),
-                array(
+                    ]
+                ],
+                [
                     'php' => $arr['travis'],
-                ),
+                ],
                 $arr['supported'],
                 $arr['expect']
-            );
+            ];
         }, $versions);
     }
 
@@ -397,20 +376,18 @@ class CheckTravisConfigurationTest extends TestCase
      * @return void
      *
      * @dataProvider prepareValidateTravisContainsAllSupportedPhpVersions
-     *
-     * @covers       CheckTravisConfiguration::validateTravisContainsAllSupportedPhpVersions
      */
     public function testValidateTravisContainsAllSupportedPhpVersions($composer, $travis, $supportedVersions, $expected)
     {
         $command = $this->getCommand();
 
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             $command->validateTravisContainsAllSupportedPhpVersions($composer, $travis, $supportedVersions),
-            sprintf(
+            \sprintf(
                 'travis-ci knows: "%s" .travis.yml: "%s" should %s - command output: "%s"',
-                implode(',', $supportedVersions),
-                implode(',', $travis['php']),
+                \implode(',', $supportedVersions),
+                \implode(',', $travis['php']),
                 ($expected ? 'validate. ' : 'not validate. '),
                 $this->getOutputFromCommand($command)
             )
@@ -424,117 +401,116 @@ class CheckTravisConfigurationTest extends TestCase
      */
     public function prepareValidateNoUnmaintainedPhpVersions()
     {
-        $versions = array
-        (
-            array(
+        $versions = [
+            [
                 'composer'  => '>=5.3',
-                'travis'    => array(
+                'travis'    => [
                     '5.3'
-                ),
-                'supported' => array(
-                ),
+                ],
+                'supported' => [
+                ],
                 'expect'    => false
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.3',
-                'travis'    => array(
+                'travis'    => [
                     '5.3',
                     '5.4'
-                ),
-                'supported' => array(
-                ),
+                ],
+                'supported' => [
+                ],
                 'expect'    => false
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.2',
-                'travis'    => array(
+                'travis'    => [
                     '5.2',
                     '5.3',
                     '5.4'
-                ),
-                'supported' => array(
+                ],
+                'supported' => [
                     '5.3',
                     '5.4'
-                ),
+                ],
                 'expect'    => false
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.3',
-                'travis'    => array(
+                'travis'    => [
                     '5.4'
-                ),
-                'supported' => array(
+                ],
+                'supported' => [
                     '5.3',
                     '5.4'
-                ),
+                ],
                 'expect'    => true
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.3',
-                'travis'    => array(
+                'travis'    => [
                     '5.3',
                     '5.4'
-                ),
-                'supported' => array(
+                ],
+                'supported' => [
                     '5.3',
                     '5.4'
-                ),
+                ],
                 'expect'    => true
-            ),
-            array(
+            ],
+            [
                 'composer'  => '>=5.4,<5.6',
-                'travis'    => array(
+                'travis'    => [
                     '5.4',
                     '5.5',
-                ),
-                'supported' => array(
+                ],
+                'supported' => [
                     '5.3',
                     '5.4',
                     '5.5',
                     '5.6',
-                ),
+                ],
                 'expect'    => true
-            ),
-            array(
+            ],
+            [
                 'composer'  => null,
-                'travis'    => array(
+                'travis'    => [
                     '5.4',
                     '5.5',
-                ),
-                'supported' => array(
+                ],
+                'supported' => [
                     '5.3',
                     '5.4',
                     '5.5',
                     '5.6',
-                ),
+                ],
                 'expect'    => true
-            ),
-            array(
+            ],
+            [
                 'composer'  => null,
                 'travis'    => null,
-                'supported' => array(
+                'supported' => [
                     '5.3',
                     '5.4',
                     '5.5',
                     '5.6',
-                ),
+                ],
                 'expect'    => true
-            ),
-        );
+            ],
+        ];
 
-        return array_map(function ($arr) {
-            return array(
-                array(
-                    'require' => $arr['composer'] ? array(
+        return \array_map(function ($arr) {
+            return [
+                [
+                    'require' => $arr['composer'] ? [
                         'php' => $arr['composer']
-                    ) : array()
-                ),
-                $arr['travis'] ? array(
+                    ] : []
+                ],
+                $arr['travis'] ? [
                     'php' => $arr['travis'],
-                ) : array(),
+                ] : [],
                 $arr['supported'],
                 $arr['expect']
-            );
+            ];
         }, $versions);
     }
 
@@ -552,21 +528,19 @@ class CheckTravisConfigurationTest extends TestCase
      * @return void
      *
      * @dataProvider prepareValidateNoUnmaintainedPhpVersions
-     *
-     * @covers       CheckTravisConfiguration::validateNoUnmaintainedPhpVersions
      */
     public function testValidateNoUnmaintainedPhpVersions($composer, $travis, $supportedVersions, $expected)
     {
         $command = $this->getCommand();
 
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             $command->validateNoUnmaintainedPhpVersions($composer, $travis, $supportedVersions),
-            sprintf(
+            \sprintf(
                 'maintained PHP versions: "%s" .travis.yml specifies: "%s" composer.json specifies: "%s" ' .
                 ' should %s - command output: "%s"',
-                implode(',', $supportedVersions),
-                implode(',', isset($travis['php']) ? $travis['php'] : array()),
+                \implode(',', $supportedVersions),
+                \implode(',', isset($travis['php']) ? $travis['php'] : []),
                 isset($composer['require']['php']) ? $composer['require']['php'] : '',
                 ($expected ? 'validate. ' : 'not validate. '),
                 $this->getOutputFromCommand($command)
