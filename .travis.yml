@@ -14,6 +14,24 @@ php:
     - "7.1"
     - "5.6"
 
+env:
+    - SYMFONY_CONSOLE_VERSION='symfony/console ^5.0'
+    - SYMFONY_CONSOLE_VERSION='symfony/console ^4.0'
+    - SYMFONY_CONSOLE_VERSION='symfony/console ^3.0'
+
+matrix:
+    fast_finish: true
+    exclude:
+        -   php: "5.6"
+            env: SYMFONY_CONSOLE_VERSION='symfony/console ^4.0'
+        -   php: "5.6"
+            env: SYMFONY_CONSOLE_VERSION='symfony/console ^5.0'
+        -   php: "7.1"
+            env: SYMFONY_CONSOLE_VERSION='symfony/console ^5.0'
+        # PHP 7.2 works with with symfony/console ^5.0. The package sebastian/phpcpd has a conflict.
+        -   php: "7.2"
+            env: SYMFONY_CONSOLE_VERSION='symfony/console ^5.0'
+
 sudo: false
 
 before_install:
@@ -21,6 +39,7 @@ before_install:
 
 install:
     - travis_retry composer self-update && composer --version
+    - travis_retry composer require ${SYMFONY_CONSOLE_VERSION} --no-update
     # We have to supply the branch alias here again as travis checks out a commit hash and therefore destroys the
     # circular dependency phpcq/all-tasks -> phpcq/autoload-validation -> phpcq/all-tasks.
     - >
