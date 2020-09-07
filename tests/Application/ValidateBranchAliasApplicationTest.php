@@ -32,7 +32,7 @@ class ValidateBranchAliasApplicationTest extends TestCase
 {
     public function testApplication()
     {
-        $input = new ArrayInput(['--help']);
+        $input = new ArrayInput(['--help' => '']);
         $output = new TestOutput();
 
         $application = new ValidateBranchAliasApplication();
