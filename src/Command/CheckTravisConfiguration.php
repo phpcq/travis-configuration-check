@@ -3,7 +3,7 @@
 /**
  * This file is part of phpcq/travis-configuration-check.
  *
- * (c) 2014 Christian Schiffler, Tristan Lins
+ * (c) 2014-2020 Christian Schiffler, Tristan Lins
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,8 @@
  * @package    phpcq/travis-configuration-check
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Tristan Lins <tristan@lins.io>
- * @copyright  2015 Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2015-2020 Christian Schiffler <c.schiffler@cyberspectrum.de>, Tristan Lins <tristan@lins.io>
  * @license    https://github.com/phpcq/travis-configuration-check/blob/master/LICENSE MIT
  * @link       https://github.com/phpcq/travis-configuration-check
  * @filesource
@@ -152,8 +153,8 @@ class CheckTravisConfiguration extends Command
                     continue;
                 }
                 $versionParser->parseConstraints($version);
-            } catch (\Exception $e) {
-                $this->output->writeln('<error>' . $e->getMessage() . '</error>');
+            } catch (\Exception $exception) {
+                $this->output->writeln('<error>' . $exception->getMessage() . '</error>');
 
                 return false;
             }
